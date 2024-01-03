@@ -1,0 +1,45 @@
+{
+    "dependencies": [
+        {
+            "module_name": "@minecraft/server",
+            "version": "1.9.0-beta"
+        }
+    ],
+    "format_version": 2,
+    "header": {
+        "description": "Made By SmokeyStack",
+        "min_engine_version": [
+            1,
+            20,
+            60
+        ],
+        "name": "[PROOF OF CONCEPT] Pocket Movs",
+        "uuid": "07C797F7-8C5F-4B1F-BC24-E3EC1DC19AC8",
+        "version": [
+            1,
+            0,
+            0
+        ]
+    },
+    "modules": [
+        {
+            "type": "data",
+            "uuid": "365C8DA8-3EA3-4EFC-A86F-7774C9BD0911",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "entry": "scripts/main.js",
+            "type": "script",
+            "uuid": "E8B1E08F-3DA2-4D54-8B9E-244B65B33CFA",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        }
+    ]
+}
