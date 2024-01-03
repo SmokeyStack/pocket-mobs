@@ -7,14 +7,21 @@ import {
     system
 } from '@minecraft/server';
 
+import { PlayerLog } from './player_log';
+
+let delay = new PlayerLog<number>();
+
 world.afterEvents.playerInteractWithEntity.subscribe((eventData) => {
     if (
         eventData.itemStack == null ||
-        eventData.itemStack.getDynamicPropertyIds().length != 0
+        eventData.itemStack.getDynamicPropertyIds().length != 0 ||
+        eventData.itemStack.typeId != 'smokeystack_pocket_mobs:pocket_empty'
     )
         return;
 
-    let item: ItemStack = eventData.itemStack;
+    let item: ItemStack = new ItemStack(
+        'smokeystack_pocket_mobs:pocket_filled'
+    );
     let target: Entity = eventData.target;
     item.setDynamicProperty('id', target.typeId);
 
@@ -215,11 +222,21 @@ world.afterEvents.playerInteractWithEntity.subscribe((eventData) => {
 world.afterEvents.playerInteractWithBlock.subscribe((eventData) => {
     if (
         eventData.itemStack == null ||
-        eventData.itemStack.getDynamicPropertyIds() == null
+        eventData.itemStack.getDynamicPropertyIds() == null ||
+        eventData.itemStack.typeId != 'smokeystack_pocket_mobs:pocket_filled'
     )
         return;
 
+    if (Date.now() - delay.get(eventData.player) < 1000) return;
+
+    delay.set(eventData.player, Date.now());
     let item: ItemStack = eventData.itemStack;
+    let inv: EntityInventoryComponent = eventData.player.getComponent(
+        'minecraft:inventory'
+    ) as any;
+    inv.container
+        ?.getSlot(eventData.player.selectedSlot)
+        .setItem(new ItemStack('smokeystack_pocket_mobs:pocket_empty'));
     let entity: Entity = eventData.player.dimension.spawnEntity(
         item.getDynamicProperty('id').toString(),
         eventData.faceLocation
